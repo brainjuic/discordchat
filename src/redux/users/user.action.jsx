@@ -1,6 +1,7 @@
-export const GoogleSignInStart=()=>{
+export const GoogleSignInStart=(walletAddress)=>{
     return{
-        type:'Google_SignIn_Start'
+        type:'Google_SignIn_Start',
+        payload:walletAddress
     }
 }
 export const SignInSuccess=()=>{

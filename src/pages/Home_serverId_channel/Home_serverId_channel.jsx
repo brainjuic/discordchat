@@ -52,7 +52,7 @@ const Home_serverId_channel = ({match}) => {
                                         <path stroke="currentColor" d="M13.5 4.5l-9 9" stroke-linecap="round"></path>
                                     </g>
                                 </svg> */}
-                                <img className='main__channels-expand' src="/discord-clone/expand.svg" alt="" />
+                                <img className='main__channels-expand' src="/expand.svg" alt="" />
                                 <div className='main__channels-text'>TEXT CHANNELS</div>
                                 <div className="main__channels-addicon">
                                     <AddChannelPopup/>
