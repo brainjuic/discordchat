@@ -3,7 +3,8 @@ import "./ChatHeader.scss";
 import { fade, makeStyles } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import Button from "@material-ui/core/Button";
 import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => {
   return {
@@ -51,9 +52,22 @@ function ChatHeader() {
             {useSelector((state) => state.doc.name)}
           </p>
         </div>
+
         <div className="chatheader__items">
-          <div className="chatheader__items-left" style={{cursor: "pointer"}} onClick={()=>""}>
-          <NotificationsIcon fontSize="large"/>
+          <div
+            className="chatheader__items-left"
+            style={{ cursor: "pointer" }}
+            onClick={() => ""}
+          >
+            <div>
+              <Button
+                variant="outlined"
+                style={{ color: "gray", fontSize: "1.2rem" }}
+              >
+                Disconnect from metamask
+              </Button>
+            </div>
+            <NotificationsIcon fontSize="large" />
             <svg
               x="0"
               y="0"
@@ -67,7 +81,19 @@ function ChatHeader() {
                 d="M22 12L12.101 2.10101L10.686 3.51401L12.101 4.92901L7.15096 9.87801V9.88001L5.73596 8.46501L4.32196 9.88001L8.56496 14.122L2.90796 19.778L4.32196 21.192L9.97896 15.536L14.222 19.778L15.636 18.364L14.222 16.95L19.171 12H19.172L20.586 13.414L22 12Z"
               ></path>
             </svg>
-            <EmojiPeopleIcon fontSize="large"/>
+            <div className="homepage__sidebar-avatar">
+              <svg aria-hidden="false" viewBox="0 0 24 24">
+                <g fill="none" fillRule="evenodd">
+                  <path
+                    fill="currentColor"
+                    fillRule="nonzero"
+                    d="M0.5,0 L0.5,1.5 C0.5,5.65 2.71,9.28 6,11.3 L6,16 L21,16 L21,14 C21,11.34 15.67,10 13,10 C13,10 12.83,10 12.75,10 C8,10 4,6 4,1.5 L4,0 L0.5,0 Z M13,0 C10.790861,0 9,1.790861 9,4 C9,6.209139 10.790861,8 13,8 C15.209139,8 17,6.209139 17,4 C17,1.790861 15.209139,0 13,0 Z"
+                    transform="translate(2 4)"
+                  ></path>
+                  <path d="M0,0 L24,0 L24,24 L0,24 L0,0 Z M0,0 L24,0 L24,24 L0,24 L0,0 Z M0,0 L24,0 L24,24 L0,24 L0,0 Z"></path>
+                </g>
+              </svg>
+            </div>
           </div>
           <div className="chatheader__searchbar">
             <input

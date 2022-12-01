@@ -4,7 +4,7 @@ const Spinner = () => {
     return (
         <>
         <SpinnerOverlay>
-            <img src="/discord.gif" alt="Discord Gif" />
+            {/* <img src="/loading.gif" alt="Discord Gif" /> */}
         </SpinnerOverlay>
         </>
     )

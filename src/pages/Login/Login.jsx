@@ -27,7 +27,7 @@ const Homepage = () => {
         <>
             <div className="discord__homepage">
              <img className="discord__homepage-svg" src="/discord.svg" alt="Discord Svg"/>
-            <Button onClick={()=>dispatch(GoogleSignInStart())} className={`${classes.google} discord__homepage-btn`} color='primary' variant='contained'>Sign In with Google</Button>
+            <Button onClick={()=>dispatch(GoogleSignInStart())} className={`${classes.google} discord__homepage-btn`}  variant="outlined" style={{color:"gray",fontSize: "1.2rem",}}>Connect to metamask</Button>
             {/* <Button onClick={signinWithGithub} startIcon={<GitHubIcon className={classes.githubicon}/>} className={`${classes.github} discord__homepage-btn`} variant='outlined'>Sign In With Github</Button> */}
             </div>
         </>
