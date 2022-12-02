@@ -4,10 +4,9 @@ import { auth, firestore, default as firebase } from "../../firebase/firebase";
 import "./Homepage.scss";
 import "../../components/AvailableServers/AvailableServers.scss";
 const homepage = () => {
-  var usersRef = firestore.collection("users");
   const [userSearch, setUserSearch] = useState(null);
   const [listOFUsers, setListOfUsers] = useState([]);
-
+  var usersRef = firestore.collection("users");
   const listOfUserfromFirestore = async () => {
     const snapshot = await usersRef.get();
     snapshot.forEach((doc) => {
@@ -130,11 +129,14 @@ const homepage = () => {
                   ) : (
                     <div className="">
                       {listOFUsers?.map((user) =>{
+                        console.log('====================================');
+                        console.log(user);
+                        console.log('====================================');
                             return (
-                                <div key={user}>
+                                <ul key={user.uid}>
                                     <img src={user.userphoto} alt="" />
                                     <p>{user.username}</p>
-                                </div>
+                                </ul>
                             )
                         })}
                     </div>
