@@ -9,14 +9,15 @@ import {ErrorBoundary} from 'react-error-boundary'
 import {ErrorImageOverlay,ErrorImageContainer,ErrorImageText} from './pages/ErrorBoundaries/Errorboundaries.styles.jsx'
 import ServerComponent from './pages/ServerComponent/ServerComponent.jsx'
 import Homepage from './pages/Homepage/HomePage.jsx';
+import { Button } from '@material-ui/core';
 const Login=lazy(()=>import('./pages/Login/Login.jsx'));
 const ServerPage=lazy(()=>import('./pages/ServerPage/ServerPage'));
 const ErrorFallback=({error,resetErrorBoundary})=>{
   return <>
     <ErrorImageOverlay>
-      <ErrorImageContainer imageUrl='https://i.imgur.com/lKJiT77.png'/>
-      <ErrorImageText>Sorry this page is broken</ErrorImageText>
-      <button onClick={resetErrorBoundary}>Try again</button>
+      <ErrorImageContainer imageUrl='/discord.svg'/>
+      <ErrorImageText>Page broked</ErrorImageText>
+      <Button variant="outlined" style={{marginTop:"15px"}} onClick={resetErrorBoundary}>Try again</Button>
     </ErrorImageOverlay>
   </>
 }

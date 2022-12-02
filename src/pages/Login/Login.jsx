@@ -43,20 +43,18 @@ const Homepage = () => {
       alert("Meta Mask not detected");
     }
   }
-console.log('====================================');
-console.log(walletAddress);
-console.log('====================================');
+
   // Create a provider to interact with a smart contract
   async function connectWallet() {
     if (typeof window.ethereum !== "undefined") {
       await requestAccount();
-
       const provider = new ethers.providers.Web3Provider(window.ethereum);
     }
   }
   const signInFunction = async () => {
-    await connectWallet();
     dispatch(GoogleSignInStart(walletAddress));
+    await connectWallet();
+
   };
 
   return (
