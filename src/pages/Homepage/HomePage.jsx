@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChatHeader from "../../components/ChatHeader/ChatHeader";
 import { auth, firestore, default as firebase } from "../../firebase/firebase";
 import "./Homepage.scss";
@@ -6,43 +6,49 @@ import "../../components/AvailableServers/AvailableServers.scss";
 const homepage = () => {
   var usersRef = firestore.collection("users");
   const [userSearch, setUserSearch] = useState(null);
-  
-  const listOfUserfromFirestore = async () => {
-    const userRef = firestore.collection("users");
-    const snapshot = await userRef.get();
-    if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-    }
-    snapshot.forEach(doc => {
-        console.log(doc.id, "=>", doc.data());
-    });
-    };
-    // const handleSearch = (e) => {
-    //     setUserSearch(e.target.value);
-    //     console.log(userSearch);
-    // };
-    // const handleAddFriend = async (e) => {
-    //     e.preventDefault();
-    //     const userRef = firestore.collection("users");
-    //     const snapshot = await userRef.get();
-    //     if (snapshot.empty) {
-    //         console.log("No matching documents.");
-    //         return;
-    //     }
-    //     snapshot.forEach(doc => {
-    //         if (doc.data().displayName === userSearch) {
-    //             console.log(doc.id, "=>", doc.data());
-    //             usersRef.doc(auth.currentUser.uid).set({
-    //                 friends: {
-    //                     [doc.id]: doc.data().displayName,
-    //                 },
-    //             }, { merge: true });
+  const [listOFUsers, setListOfUsers] = useState([]);
 
-    //         }
-    //     });
-    // };
-    
+  const listOfUserfromFirestore = async () => {
+    const snapshot = await usersRef.get();
+    snapshot.forEach((doc) => {
+        setListOfUsers([...listOFUsers, doc.data()]);
+    });
+    // await usersRef.get().then(function (querySnapshot) {
+    //   querySnapshot.forEach(function (doc) {
+    //     setListOfUsers([...listOFUsers, doc.data()]);      
+    // });
+    // });
+    console.log(listOFUsers);
+  };
+
+  useEffect(() => {
+    listOfUserfromFirestore();
+    }, []);
+
+  // const handleSearch = (e) => {
+  //     setUserSearch(e.target.value);
+  //     console.log(userSearch);
+  // };
+  // const handleAddFriend = async (e) => {
+  //     e.preventDefault();
+  //     const userRef = firestore.collection("users");
+  //     const snapshot = await userRef.get();
+  //     if (snapshot.empty) {
+  //         console.log("No matching documents.");
+  //         return;
+  //     }
+  //     snapshot.forEach(doc => {
+  //         if (doc.data().displayName === userSearch) {
+  //             console.log(doc.id, "=>", doc.data());
+  //             usersRef.doc(auth.currentUser.uid).set({
+  //                 friends: {
+  //                     [doc.id]: doc.data().displayName,
+  //                 },
+  //             }, { merge: true });
+
+  //         }
+  //     });
+  // };
 
   const searchFromAllUsers = (e) => {
     const search = e.target.value;
@@ -63,17 +69,15 @@ const homepage = () => {
       setUserSearch(null);
     }
   };
-  
-    const addFriend = (e) => {
-        e.preventDefault();
-        const userRef = firestore.collection("users").doc(auth.currentUser.uid);
-        userRef.update({
-            friends: firebase.firestore.FieldValue.arrayUnion(userSearch.uid),
-        });
-        setUserSearch(null);
-    };
 
-
+  //   const addFriend = (e) => {
+  //     e.preventDefault();
+  //     const userRef = firestore.collection("users").doc(auth.currentUser.uid);
+  //     userRef.update({
+  //       friends: firebase.firestore.FieldValue.arrayUnion(userSearch.uid),
+  //     });
+  //     setUserSearch(null);
+  //   };
 
   return (
     <>
@@ -125,7 +129,14 @@ const homepage = () => {
                     </>
                   ) : (
                     <div className="">
-                      <p></p>
+                      {listOFUsers?.map((user) =>{
+                            return (
+                                <div key={user}>
+                                    <img src={user.userphoto} alt="" />
+                                    <p>{user.username}</p>
+                                </div>
+                            )
+                        })}
                     </div>
                   )}
                 </div>
