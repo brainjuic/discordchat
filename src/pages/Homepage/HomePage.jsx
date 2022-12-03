@@ -3,31 +3,19 @@ import ChatHeader from "../../components/ChatHeader/ChatHeader";
 import { auth, firestore, default as firebase } from "../../firebase/firebase";
 import "./Homepage.scss";
 import "../../components/AvailableServers/AvailableServers.scss";
+import Divider from '@material-ui/core/Divider';
 const homepage = () => {
   const [userSearch, setUserSearch] = useState(null);
-  const [listOFUsers, setListOfUsers] = useState([]);
-  var usersRef = firestore.collection("users");
-  const listOfUserfromFirestore = async () => {
-    const snapshot = await usersRef.get();
-    snapshot.forEach((doc) => {
-        setListOfUsers([...listOFUsers, doc.data()]);
-    });
-    // await usersRef.get().then(function (querySnapshot) {
-    //   querySnapshot.forEach(function (doc) {
-    //     setListOfUsers([...listOFUsers, doc.data()]);      
-    // });
-    // });
-    console.log(listOFUsers);
-  };
+  const [listOFUsers, setListOfUsers] = useState(null);
+  useEffect(() => { 
+    const fetchUsers = async () => {
+      const usersCollection = firestore.collection("users");
+      const data = await usersCollection.get();
+      setListOfUsers(data.docs.map((doc) => doc.data()));
+    };
+    fetchUsers();
+  }, []);
 
-  useEffect(() => {
-    listOfUserfromFirestore();
-    }, []);
-
-  // const handleSearch = (e) => {
-  //     setUserSearch(e.target.value);
-  //     console.log(userSearch);
-  // };
   // const handleAddFriend = async (e) => {
   //     e.preventDefault();
   //     const userRef = firestore.collection("users");
@@ -52,7 +40,7 @@ const homepage = () => {
   const searchFromAllUsers = (e) => {
     const search = e.target.value;
     if (search.length > 0) {
-      usersRef
+      firestore.collection("users")
         .where("username", "==", search)
         .get()
         .then((querySnapshot) => {
@@ -68,7 +56,6 @@ const homepage = () => {
       setUserSearch(null);
     }
   };
-
   //   const addFriend = (e) => {
   //     e.preventDefault();
   //     const userRef = firestore.collection("users").doc(auth.currentUser.uid);
@@ -117,31 +104,30 @@ const homepage = () => {
                 </div>
                 <div className="homepage__sidebar-title">Friends</div>
               </div>
-              <div className="">
-                <div className="">
+              <Divider/>
+              <div className="" style={{marginTop:"8px"}}>
+                
                   {userSearch ? (
                     <>
                       <div className="">
-                        <img src={userSearch.userphoto} alt="" />
+                        <img className="false availableserver__map-imageuniversal" src={userSearch.userphoto} alt="" />
                       </div>
                       <p>{userSearch?.username}</p>
                     </>
                   ) : (
                     <div className="">
                       {listOFUsers?.map((user) =>{
-                        console.log('====================================');
                         console.log(user);
-                        console.log('====================================');
                             return (
-                                <ul key={user.uid}>
-                                    <img src={user.userphoto} alt="" />
-                                    <p>{user.username}</p>
+                                <ul style={{display:"flex", flexDirection:"row", marginBottom:"12px"}} key={user.uid}>
+                                    <img className="false availableserver__map-imageuniversal" src={user.userphoto} alt="" />
+                                    <p style={{margin:"5px",paddingTop:"19px"}}>{user.username}</p>
                                 </ul>
                             )
                         })}
                     </div>
                   )}
-                </div>
+                
               </div>
             </div>
             {/* <div className='homepage__channels'>
@@ -169,7 +155,7 @@ const homepage = () => {
           </div>
           <div className="homepage__mid">
             <div className="homepage__mid-imagecontainer">
-              {/* <img className="homepage__mid-image" src="https://discord.com/assets/a12ff54c4c5c03b41006fd96a4709c29.svg" /> */}
+              <img className="homepage__mid-image" src="/wampus.svg" />
             </div>
             <p className="homepage__mid-text">
               No one's around to play with Wumpus.
