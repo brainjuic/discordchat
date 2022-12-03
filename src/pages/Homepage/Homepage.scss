@@ -82,6 +82,7 @@
                 background-color: #34373c;
             }
         }
+       
         &-avatar{
             font-size: 2rem;
             margin-right: 1.6rem;
@@ -99,6 +100,11 @@
         }
 
        
+    }
+    &__useslist{
+        &:hover{
+            background-color: #34373c;
+        }
     }
     &__mid{
         background-color: #36393f;

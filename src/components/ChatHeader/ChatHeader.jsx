@@ -6,6 +6,8 @@ import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Button from "@material-ui/core/Button";
 import { useSelector } from "react-redux";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 const useStyles = makeStyles((theme) => {
   return {
     search: {
@@ -43,6 +45,8 @@ const useStyles = makeStyles((theme) => {
   };
 });
 function ChatHeader() {
+  const [openMenu, setOpenMenu] = React.useState(false);
+
   return (
     <div className="chat__main">
       <div className="chatheader">
@@ -115,7 +119,10 @@ function ChatHeader() {
               </svg>
             </div>
           </div>
-          <div className="chatheader__items-right">
+          <div
+            className="chatheader__items-right"
+            onClick={() => setOpenMenu(!openMenu)}
+          >
             <PersonIcon fontSize="large" />
           </div>
         </div>

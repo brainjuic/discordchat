@@ -3,11 +3,11 @@ import ChatHeader from "../../components/ChatHeader/ChatHeader";
 import { auth, firestore, default as firebase } from "../../firebase/firebase";
 import "./Homepage.scss";
 import "../../components/AvailableServers/AvailableServers.scss";
-import Divider from '@material-ui/core/Divider';
+import Divider from "@material-ui/core/Divider";
 const homepage = () => {
   const [userSearch, setUserSearch] = useState(null);
   const [listOFUsers, setListOfUsers] = useState(null);
-  useEffect(() => { 
+  useEffect(() => {
     const fetchUsers = async () => {
       const usersCollection = firestore.collection("users");
       const data = await usersCollection.get();
@@ -40,7 +40,8 @@ const homepage = () => {
   const searchFromAllUsers = (e) => {
     const search = e.target.value;
     if (search.length > 0) {
-      firestore.collection("users")
+      firestore
+        .collection("users")
         .where("username", "==", search)
         .get()
         .then((querySnapshot) => {
@@ -104,30 +105,47 @@ const homepage = () => {
                 </div>
                 <div className="homepage__sidebar-title">Friends</div>
               </div>
-              <Divider/>
-              <div className="" style={{marginTop:"8px"}}>
-                
-                  {userSearch ? (
-                    <>
-                      <div className="">
-                        <img className="false availableserver__map-imageuniversal" src={userSearch.userphoto} alt="" />
-                      </div>
+              <Divider />
+              <div style={{ marginTop: "8px" }}>
+                {userSearch ? (
+                  <>
+                    <div className="homepage__useslist">
+                      <img
+                        className="false availableserver__map-imageuniversal"
+                        src={userSearch.userphoto}
+                        alt=""
+                      />
+
                       <p>{userSearch?.username}</p>
-                    </>
-                  ) : (
-                    <div className="">
-                      {listOFUsers?.map((user) =>{
-                        console.log(user);
-                            return (
-                                <ul style={{display:"flex", flexDirection:"row", marginBottom:"12px"}} key={user.uid}>
-                                    <img className="false availableserver__map-imageuniversal" src={user.userphoto} alt="" />
-                                    <p style={{margin:"5px",paddingTop:"19px"}}>{user.username}</p>
-                                </ul>
-                            )
-                        })}
                     </div>
-                  )}
-                
+                  </>
+                ) : (
+                  <div >
+                    {listOFUsers?.map((user) => {
+                      console.log(user);
+                      return (
+                        <div key={Math.random() + 1} className="homepage__useslist">
+                          <ul
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              marginBottom: "12px",
+                            }}
+                          >
+                            <img
+                              className="false availableserver__map-imageuniversal"
+                              src={user.userphoto}
+                              alt=""
+                            />
+                            <p style={{ margin: "5px", paddingTop: "19px" }}>
+                              {user.username}
+                            </p>
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
             {/* <div className='homepage__channels'>

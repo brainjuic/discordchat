@@ -61,7 +61,7 @@ export default function BadgeAvatars() {
   const [user]=useAuthState(auth);
   const [mic,setmic]=useState(false);
   const classes=useStyles();
-  const handleClick=async ()=>{
+  const handleSignOut=async ()=>{
     await auth.signOut();
     history.push('/discord-clone');
   }
@@ -88,7 +88,7 @@ export default function BadgeAvatars() {
             <IconButton className={classes.icon} aria-label="headphone">
             <HeadsetMicIcon fontSize='large'/>
             </IconButton>
-            <IconButton className={classes.icon} aria-label="logout" onClick={handleClick}>
+            <IconButton className={classes.icon} aria-label="logout" onClick={handleSignOut}>
               <ExitToAppIcon fontSize='large' />
             </IconButton>
         </div>
