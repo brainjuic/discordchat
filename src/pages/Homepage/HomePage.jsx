@@ -4,9 +4,14 @@ import { auth, firestore, default as firebase } from "../../firebase/firebase";
 import "./Homepage.scss";
 import "../../components/AvailableServers/AvailableServers.scss";
 import Divider from "@material-ui/core/Divider";
+import { useHistory } from "react-router";
+import OneToChatMessage from "../../components/oneToOneChat/oneToChatMessage";
+import ChatSearchBar from "../../components/ChatSearchBar/ChatSearchBar";
 const homepage = () => {
+  const history = useHistory();
   const [userSearch, setUserSearch] = useState(null);
   const [listOFUsers, setListOfUsers] = useState(null);
+  const [chatRoom, setChatRoom] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       const usersCollection = firestore.collection("users");
@@ -15,7 +20,10 @@ const homepage = () => {
     };
     fetchUsers();
   }, []);
-
+  const onToOneChatRef = firestore
+    .collection("oneToOneChat")
+    .doc()
+    .collection("messages");
   // const handleAddFriend = async (e) => {
   //     e.preventDefault();
   //     const userRef = firestore.collection("users");
@@ -36,7 +44,6 @@ const homepage = () => {
   //         }
   //     });
   // };
-
   const searchFromAllUsers = (e) => {
     const search = e.target.value;
     if (search.length > 0) {
@@ -56,6 +63,52 @@ const homepage = () => {
     } else {
       setUserSearch(null);
     }
+  };
+  // const handleAddFriend = async (e) => {
+  //   e.preventDefault();
+  //   const userRef = firestore.collection("users");
+  //   const snapshot = await userRef.get();
+  //   if (snapshot.empty) {
+  //     console.log("No matching documents.");
+  //     return;
+  //   }
+  //   snapshot.forEach((doc) => {
+  //     if (doc.data().username === userSearch.username) {
+  //       // console.log(doc.id, "=>", doc.data());
+  //       firestore
+  //         .collection("users")
+  //         .doc(auth.currentUser.uid)
+  //         .set(
+  //           {
+  //             friends: {
+  //               [doc.id]: doc.data().username,
+  //             },
+  //           },
+  //           { merge: true }
+  //         );
+  //     }
+  //   });
+  // };
+  const handleChatRoom = () => {
+    onToOneChatRef.add({
+      message: "",
+      sendername: auth.currentUser.displayName,
+      senderemail: auth.currentUser.email,
+      senderuid: auth.currentUser.uid,
+      senderphoto: auth.currentUser.photoURL,
+      recieveruid: "",
+      recievername: "",
+      recieveremail: "",
+      recieverphoto: "",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      reply: "",
+    });
+    setChatRoom(true);
+  };
+  const handleLogout = (e) => {
+    e.preventDefault();
+    auth.signOut();
+    history.push("/login");
   };
   //   const addFriend = (e) => {
   //     e.preventDefault();
@@ -106,7 +159,7 @@ const homepage = () => {
                 <div className="homepage__sidebar-title">Friends</div>
               </div>
               <Divider />
-              <div style={{ marginTop: "8px" }}>
+              <div style={{ marginTop: "8px", cursor: "pointer" }}>
                 {userSearch ? (
                   <>
                     <div className="homepage__useslist">
@@ -120,29 +173,40 @@ const homepage = () => {
                     </div>
                   </>
                 ) : (
-                  <div >
+                  <div>
                     {listOFUsers?.map((user) => {
-                      console.log(user);
-                      return (
-                        <div key={Math.random() + 1} className="homepage__useslist">
-                          <ul
-                            style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              marginBottom: "12px",
+                      if (user.username !== auth.currentUser.displayName) {
+                        return (
+                          <div
+                            key={Math.random() + 1}
+                            style={{ cursor: "pointer", }}
+                            className="homepage__useslist"
+                            onClick={() => {
+                              handleChatRoom();
                             }}
                           >
-                            <img
-                              className="false availableserver__map-imageuniversal"
-                              src={user.userphoto}
-                              alt=""
-                            />
-                            <p style={{ margin: "5px", paddingTop: "19px" }}>
-                              {user.username}
-                            </p>
-                          </ul>
-                        </div>
-                      );
+                            <ul
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                marginBottom: "12px",
+                              }}
+                            >
+                              <img
+                                className="false availableserver__map-imageuniversal"
+                                src={user.userphoto}
+                                alt=""
+                              />
+                              <p style={{ margin: "5px", paddingTop: "19px" }}>
+                                {user.username}
+                              </p>
+                              
+                            </ul>
+                            
+                          </div>
+
+                        );
+                      }
                     })}
                   </div>
                 )}
@@ -171,14 +235,33 @@ const homepage = () => {
                                     <BadgeAvatars/>
                             </div> */}
           </div>
-          <div className="homepage__mid">
-            <div className="homepage__mid-imagecontainer">
-              <img className="homepage__mid-image" src="/wampus.svg" />
+          {chatRoom ? (
+            <div className="homepage__mid">
+              <div className="homepage__mid-imagecontainer">
+                <div className="chat">
+                  <div className="chat__message">
+                    <OneToChatMessage />
+                  </div>
+                  <div className="chat__searchbar">
+                    {/* <ChatSearchBar/> */}
+                </div>   
+                </div>
+              </div>
+              <p className="homepage__mid-text">
+                One to one chat will initiate here
+              </p>
             </div>
-            <p className="homepage__mid-text">
-              No one's around to play with Wumpus.
-            </p>
-          </div>
+          ) : (
+            <div className="homepage__mid">
+              <div className="homepage__mid-imagecontainer">
+                <img className="homepage__mid-image" src="/wampus.svg" />
+              </div>
+              <p className="homepage__mid-text">
+                No one's around to play with Wumpus.
+              </p>
+            </div>
+          )}
+
           {/* <div className="chat">
                             <div className='chat__message'>
                                 <ChatMessage/>
