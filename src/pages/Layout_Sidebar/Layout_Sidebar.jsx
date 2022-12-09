@@ -16,15 +16,6 @@ const LayoutSidebar = ({children}) => {
     const classes=useStyles();
     return (
         <>
-            {/* <div className="mainpage"> */}
-                {/* <div className="mainpage__servers">
-                    <div className="mainpage__servers--add">
-                        <Addserver/>
-                    </div>
-                    <div className="mainpage__servers-display">
-                        <AvailableServers/>
-                    </div>
-                </div> */}
                 <div className='main'>
                     <div className="main__header">
                         <div className="main__header-sidebar">
@@ -42,45 +33,10 @@ const LayoutSidebar = ({children}) => {
                         </div>
                     </div>
                     <div className="main__content">
-                        {/* <div className='main__sidebar'>
-                            <div className='main__channels'>
-                                <div className="main__channels-header">
-                                    <div className="main__channels-expandicon">
-                                    <IconButton className={classes.button} aria-label="settings">
-                                        <ExpandMoreIcon/>
-                                    </IconButton>
-                                        </div>
-                                    <p>Text Channels</p>
-                                    <div className="main__channels-addicon">
-                                        <AddChannelPopup/>
-                                    </div>
-                                </div>
-                                <div className="main__channels-list">
-                                    <SidebarChannel/>
-                                </div>
-                            </div>
-                            <div className="main__voice">
-                                <Sidebarvoice/>
-                            </div>
-                            <div className="main__avatar">
-                                    <BadgeAvatars/>
-                            </div>
-                        </div> */}
                         {children}
-                        {/* <div className="chat">
-                            <div className='chat__message'>
-                                <ChatMessage/>
-                            </div>
-                            <div className="chat__searchbar">
-                                <ChatSearchBar/>
-                            </div>
-                        </div> */}
-                        {/* <div className="main__roles">
-                            <Roles/>
-                        </div> */}
+                        
                     </div>
                 </div>
-            {/* </div> */}
         </>
     )
 }

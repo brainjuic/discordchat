@@ -6,20 +6,29 @@ import "../../components/AvailableServers/AvailableServers.scss";
 import Divider from "@material-ui/core/Divider";
 import { useHistory } from "react-router";
 import OneToChatMessage from "../../components/oneToOneChat/oneToChatMessage";
-import ChatSearchBar from "../../components/ChatSearchBar/ChatSearchBar";
+import OneToOneChatSearchBar from "../../components/oneToOneChatSearchBar/OneToOneChatSearchBar";
+
 const homepage = () => {
   const history = useHistory();
   const [userSearch, setUserSearch] = useState(null);
   const [listOFUsers, setListOfUsers] = useState(null);
+  const [listOfDocId, setListOfDocId] = useState(null);
   const [chatRoom, setChatRoom] = useState(false);
   useEffect(() => {
     const fetchUsers = async () => {
       const usersCollection = firestore.collection("users");
       const data = await usersCollection.get();
+      setListOfDocId(data.docs.map((doc) => 
+      
+      doc.id
+      ));
       setListOfUsers(data.docs.map((doc) => doc.data()));
+
+   
     };
     fetchUsers();
   }, []);
+  const onToOneChatRoomRef = firestore.collection("chatRoom").doc().collection("roommembers");
   const onToOneChatRef = firestore
     .collection("oneToOneChat")
     .doc()
@@ -90,6 +99,13 @@ const homepage = () => {
   //   });
   // };
   const handleChatRoom = () => {
+    
+    onToOneChatRoomRef.add({
+      senderuid: auth.currentUser.uid,
+      recieverid: "",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
     onToOneChatRef.add({
       message: "",
       sendername: auth.currentUser.displayName,
@@ -104,20 +120,13 @@ const homepage = () => {
       reply: "",
     });
     setChatRoom(true);
+    // history.push(`/channels/@me/${auth.currentUser.uid}`);
   };
-  const handleLogout = (e) => {
-    e.preventDefault();
-    auth.signOut();
-    history.push("/login");
-  };
-  //   const addFriend = (e) => {
-  //     e.preventDefault();
-  //     const userRef = firestore.collection("users").doc(auth.currentUser.uid);
-  //     userRef.update({
-  //       friends: firebase.firestore.FieldValue.arrayUnion(userSearch.uid),
-  //     });
-  //     setUserSearch(null);
-  //   };
+  // const handleLogout = (e) => {
+  //   e.preventDefault();
+  //   auth.signOut();
+  //   history.push("/login");
+  // };
 
   return (
     <>
@@ -162,27 +171,34 @@ const homepage = () => {
               <div style={{ marginTop: "8px", cursor: "pointer" }}>
                 {userSearch ? (
                   <>
-                    <div className="homepage__useslist">
+                    <div
+                      className="homepage__useslist"
+                      onClick={() => {
+                        handleChatRoom();
+                      }}
+                    >
                       <img
                         className="false availableserver__map-imageuniversal"
                         src={userSearch.userphoto}
                         alt=""
                       />
-
                       <p>{userSearch?.username}</p>
                     </div>
                   </>
                 ) : (
                   <div>
-                    {listOFUsers?.map((user) => {
+                    {listOFUsers?.map((user,index) => {
+              
+                    // console.log(listOfDocId);
                       if (user.username !== auth.currentUser.displayName) {
                         return (
                           <div
-                            key={Math.random() + 1}
-                            style={{ cursor: "pointer", }}
+                            key={listOfDocId[index]}
+                            style={{ cursor: "pointer" }}
                             className="homepage__useslist"
-                            onClick={() => {
-                              handleChatRoom();
+                            onClick={(e) => {
+                              console.log(e);
+                              handleChatRoom(user.uid);
                             }}
                           >
                             <ul
@@ -200,11 +216,8 @@ const homepage = () => {
                               <p style={{ margin: "5px", paddingTop: "19px" }}>
                                 {user.username}
                               </p>
-                              
                             </ul>
-                            
                           </div>
-
                         );
                       }
                     })}
@@ -212,44 +225,15 @@ const homepage = () => {
                 )}
               </div>
             </div>
-            {/* <div className='homepage__channels'>
-                                <div className="homepage__channels-header">
-                                    <div className="homepage__channels-expandicon">
-                                    <IconButton className={classes.button} aria-label="settings">
-                                        <ExpandMoreIcon/>
-                                    </IconButton>
-                                        </div>
-                                    <p>Text Channels</p>
-                                    <div className="homepage__channels-addicon">
-                                        <AddChannelPopup/>
-                                    </div>
-                                </div>
-                                <div className="homepage__channels-list">
-                                    <SidebarChannel/>
-                                </div>
-                            </div>
-                            <div className="homepage__voice">
-                                <Sidebarvoice/>
-                            </div>
-                            <div className="homepage__avatar">
-                                    <BadgeAvatars/>
-                            </div> */}
           </div>
           {chatRoom ? (
-            <div className="homepage__mid">
-              <div className="homepage__mid-imagecontainer">
-                <div className="chat">
-                  <div className="chat__message">
-                    <OneToChatMessage />
-                  </div>
-                  <div className="chat__searchbar">
-                    {/* <ChatSearchBar/> */}
-                </div>   
-                </div>
+            <div className="chat">
+              <div className="chat__message">
+                <OneToChatMessage />
               </div>
-              <p className="homepage__mid-text">
-                One to one chat will initiate here
-              </p>
+              <div className="chat__searchbar">
+                <OneToOneChatSearchBar />
+              </div>
             </div>
           ) : (
             <div className="homepage__mid">
@@ -261,15 +245,6 @@ const homepage = () => {
               </p>
             </div>
           )}
-
-          {/* <div className="chat">
-                            <div className='chat__message'>
-                                <ChatMessage/>
-                            </div>
-                            <div className="chat__searchbar">
-                                <ChatSearchBar/>
-                            </div>
-                        </div> */}
           <div className="activity">
             <div className="activity__container">
               <div className="activity__container-heading">ACTIVE NOW</div>
@@ -286,7 +261,6 @@ const homepage = () => {
           </div>
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 };

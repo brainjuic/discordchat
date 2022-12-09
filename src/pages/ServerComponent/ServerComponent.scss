@@ -3,6 +3,7 @@
     position: relative;
     height: 100vh;
     &__servers{
+        cursor: pointer;
         width: 7.1rem;
         display: flex;
         flex-direction: column;

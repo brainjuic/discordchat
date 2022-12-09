@@ -86,7 +86,7 @@ function AvailableServers() {
       </div>
       {servers &&
         servers.map((server) => {
-          return <AvailableServersmap key={server.id} server={server} />;
+          return <AvailableServersmap key={server?.id} server={server} />;
         })}
     </div>
   );

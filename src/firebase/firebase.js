@@ -29,6 +29,7 @@ export const CreateUserProfileDocument = () => {
   const userRef = firestore.collection("users").doc(auth.currentUser.uid);
   userRef.set(
     {
+      id: auth.currentUser.uid,
       username: auth.currentUser.displayName,
       useremail: auth.currentUser.email,
       userphoto: auth.currentUser.photoURL,

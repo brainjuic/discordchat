@@ -12,6 +12,7 @@ import Homepage from './pages/Homepage/HomePage.jsx';
 import { Button } from '@material-ui/core';
 const Login=lazy(()=>import('./pages/Login/Login.jsx'));
 const ServerPage=lazy(()=>import('./pages/ServerPage/ServerPage'));
+const OnetoOneChat=lazy(()=>import('./pages/onetoonechat/OnetoOneChat'));
 const ErrorFallback=({error,resetErrorBoundary})=>{
   return <>
     <ErrorImageOverlay>
@@ -37,6 +38,7 @@ const [user]=useAuthState(auth);
             <Switch>
               <Route exact path='/discord-clone/channels/@me' render={()=><Homepage/>}/>
               <Route path='/discord-clone/channels/:serverId' render={(props)=><LayoutSidebar><ServerPage {...props}/></LayoutSidebar>}/>
+              <Route path='/discord-clone/dms/:chatId' render={(props)=><LayoutSidebar><OnetoOneChat {...props}/></LayoutSidebar>}/>
             </Switch>
             </Suspense>
           </ErrorBoundary>

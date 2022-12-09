@@ -6,6 +6,7 @@ import Allrolescolormap from './Allrolescolormap';
 import Allrolesmap from './Allrolesmap';
 import firebase from 'firebase/app'
 import { Avatar, makeStyles } from '@material-ui/core';
+import { v4 as uuidv4 } from 'uuid';
 const useStyles=makeStyles((theme)=>{
     return{
       avatar:{
@@ -49,6 +50,7 @@ const RolesDocumentmap = ({role}) => {
 
                 const serverRef=firestore.collection('servers').doc(currentserverid).collection('allroles').doc(serverroletypeid).collection('allroles').doc(serverroleid).collection('allusers');
                 serverRef.doc(userid.id).set({
+                    id:uuidv4(),
                     username:name,
                     photoURL:photoURL,
                     email:email,
