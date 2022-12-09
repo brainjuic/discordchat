@@ -6,8 +6,8 @@ import ChatEdit from '../ChatEdit/ChatEdit'
 import { useSelector } from 'react-redux'
 import ChatReply from '../ChatReply/ChatReply'
 import Linkify from 'react-linkify';
-import OneToChatMessageRenderVideo from './oneToChatMessageRenderVideo'
-import OneToChatMessageRenderAudio from './oneToChatMessageRenderAudio'
+import OneToChatMessageRenderVideo from './oneToChatMessageRenderVideo';
+import OneToChatMessageRenderAudio from './oneToChatMessageRenderAudio';
 const useStyles=makeStyles((theme)=>{
     return{
       avatar:{
@@ -20,7 +20,7 @@ const useStyles=makeStyles((theme)=>{
     const [inHover, setHover] = useState(false);
     const message=msg.message.replaceAll("\\n", "\n");
     const classes=useStyles();
-    const id=useSelector((state)=>state.msg.id); 
+    const id=useSelector((state)=>state.msg.id);
     const admin=useSelector((state)=>state.currentrole.admin);
     const chatedittoggle=useSelector((state)=>state.click.clicked);
     const linkify=(input)=>{
