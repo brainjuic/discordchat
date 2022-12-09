@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import { useSelector } from "react-redux";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { auth } from "../../firebase/firebase";
 const useStyles = makeStyles((theme) => {
   return {
     search: {
@@ -67,6 +68,7 @@ function ChatHeader() {
               <Button
                 variant="outlined"
                 style={{ color: "gray", fontSize: "1.2rem" }}
+                onClick={() => auth.signOut()}
               >
                 Disconnect from metamask
               </Button>
