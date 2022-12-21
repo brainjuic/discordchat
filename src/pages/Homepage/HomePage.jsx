@@ -6,7 +6,7 @@ import "../../components/AvailableServers/AvailableServers.scss";
 import Divider from "@material-ui/core/Divider";
 import { useHistory } from "react-router";
 import OneToChatMessage from "../../components/oneToOneChat/oneToChatMessage";
-import OneToOneChatSearchBar from "../../components/oneToOneChatSearchBar/OneToOneChatSearchBar";
+// import OneToOneChatSearchBar from "../../components/oneToOneChatSearchBar/oneToOneChatSearchBar";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 const homepage = () => {
   const history = useHistory();
@@ -236,7 +236,7 @@ const homepage = () => {
                 <OneToChatMessage />
               </div>
               <div className="chat__searchbar">
-                <OneToOneChatSearchBar />
+                {/* <OneToOneChatSearchBar /> */}
               </div>
             </div>
           ) : (
